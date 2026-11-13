@@ -1,0 +1,8 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(?:app|storage|tests)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:api/app/fauth/license/check|api/v1/license/validate|health)/?$ api.php [L,QSA,NC]
+RewriteRule ^$ admin.php [L]
+<FilesMatch "^(\.env|\.gitignore|composer\.json|.*\.(sql|md|log|bak|ini|yml|yaml))$">
+    Require all denied
+</FilesMatch>
