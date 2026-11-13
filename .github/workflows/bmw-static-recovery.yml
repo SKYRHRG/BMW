@@ -26,6 +26,7 @@ jobs:
           python recovery/license_probe.py
           python recovery/target_license_modules.py
           python recovery/license_contract_trace.py
+          python recovery/step2_introspect.py
       - name: Print safe summary only
         run: |
           echo "==== PyInstaller metadata (head) ===="
