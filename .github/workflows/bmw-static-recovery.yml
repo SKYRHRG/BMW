@@ -25,6 +25,7 @@ jobs:
           python recovery/bmw_static_report.py
           python recovery/license_probe.py
           python recovery/target_license_modules.py
+          python recovery/license_contract_trace.py
       - name: Print safe summary only
         run: |
           echo "==== PyInstaller metadata (head) ===="
@@ -53,5 +54,7 @@ jobs:
             recovery-output/EXTRACTED_FILE_INVENTORY.json
             recovery-output/MAIN_MODULE_CODE_STRUCTURE.json
             recovery-output/LICENSE_MODULE_STRUCTURE.json
+            recovery-output/license_client.pyc.disassembly.txt
+            recovery-output/license_dialog.pyc.disassembly.txt
             recovery-output/README_RECOVERY.md
           retention-days: 7
