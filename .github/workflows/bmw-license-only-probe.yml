@@ -1,0 +1,32 @@
+name: BMW license-only configuration probe
+on:
+  push:
+    branches: [recovery/bmw-license-only-migration]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install unpacker
+        run: python -m pip install pyinstxtractor-ng==2026.7.3
+      - name: Extract original BMW executable without running it
+        run: |
+          pyinstxtractor-ng BMW.exe > extraction-license.log 2>&1
+          python license-migration/probe_original_license_config.py | tee license-probe.log
+      - name: Preserve probe result
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMW-LICENSE-ONLY-PROBE
+          path: |
+            license-probe.log
+            extraction-license.log
+          retention-days: 7
