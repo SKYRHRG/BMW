@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "BMW Proxy Auth + Slot Badge",
+  "version": "1.0.0",
+  "description": "Proxy को set करे, basic-auth को auto-handle करे, और corner में Slot-X दिखाए.",
+  "permissions": [
+    "proxy",
+    "storage",
+    "webRequest",
+    "webRequestAuthProvider",
+    "declarativeNetRequest",
+    "tab"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "bg.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["badge.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "128": "icons/128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["seed.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

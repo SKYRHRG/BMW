@@ -1,0 +1,39 @@
+[
+    {
+        "name_to_save": "sartaj",
+        "from_station": "BARDDHAMAN JN - BWN",
+        "to_station": "KHANA JN - KAN",
+        "boarding_point": "",
+        "from_station_name": "BARDDHAMAN JN",
+        "to_station_name": "KHANA JN",
+        "boarding_point_name": "",
+        "from_station_code": "BWN",
+        "to_station_code": "KAN",
+        "boarding_point_code": "",
+        "journey_date": "20260211",
+        "train_no": "53047",
+        "journey_class": "2S",
+        "quota": "General",
+        "irctc_id": "neelamkm2123",
+        "payment_method": "IRCTC6888",
+        "mobile_number": "8756379291",
+        "travel_insurance": true,
+        "confirm_berth": true,
+        "slot": 1,
+        "passengers": [
+            {
+                "name": "sartaj",
+                "age": "34",
+                "sex": "Male",
+                "berth": "",
+                "food": "No Food",
+                "nationality": "India-IN",
+                "passport": "",
+                "is_child": false,
+                "is_senior": false,
+                "need_bedroll": false
+            }
+        ],
+        "pt_fare": ""
+    }
+]

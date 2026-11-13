@@ -1,0 +1,13 @@
+{
+  "activeSlot": 1,
+  "proxy": {
+    "scheme": "",
+    "ip": "",
+    "port": "",
+    "user": "",
+    "pass": ""
+  },
+  "bypassList": [
+    "<local>"
+  ]
+}

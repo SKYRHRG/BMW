@@ -1,0 +1,254 @@
+/* Universal Settings */
+QWidget {
+    background-color: #131722;
+    color: #E6E6E6;
+    border: none;
+    font-size: 11pt;
+}
+
+/* Main Window (Patli Patti) and Dialogs */
+QMainWindow, QDialog {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 #0B0E11, stop:1 #131722);
+    border: 1px solid #243447;
+}
+
+/* Main Menu Bar Styling */
+QMenuBar {
+    font-weight: bold; /* फॉन्ट को बोल्ड करता है */
+    font-size: 11pt;   /* फॉन्ट साइज सुनिश्चित करता है */
+}
+
+/* Labels */
+QLabel {
+    background-color: transparent;
+}
+
+/* Radio Buttons */
+QRadioButton {
+    background-color: transparent;
+    font-weight: 600;
+}
+QRadioButton::indicator {
+    border: 1px solid #566573;
+    background-color: #1C2833;
+    border-radius: 7px;
+    width: 14px;
+    height: 14px;
+}
+QRadioButton::indicator:checked {
+    border: 2px solid #1DB954;
+    background-color: #1DB954;
+}
+
+/* CheckBox Styling */
+QCheckBox {
+    background-color: transparent;
+    font-weight: normal;
+}
+QCheckBox::indicator {
+    border: 1px solid #566573;
+    background-color: #1C2833;
+    border-radius: 3px;
+    width: 15px;
+    height: 15px;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #AAB7B8;
+}
+QCheckBox::indicator:checked {
+    background-color: #1DB954;
+    border: 1px solid #1DB954;
+    image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="white" d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>');
+}
+
+/* Input Fields */
+QLineEdit, QTextEdit, QComboBox {
+    background-color: #0B1016;
+    border: 1px solid #243447;
+    border-radius: 4px;
+    padding: 4px;
+}
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+    border: 1px solid #1F3A93;
+}
+QComboBox::drop-down {
+    border: none;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #0F2A47;
+    border: 1px solid #1B4F72;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 700;
+}
+QPushButton:hover {
+    background-color: #154360;
+}
+QPushButton:pressed {
+    background-color: #1A5276;
+}
+QPushButton:disabled {
+    background-color: #2E4053;
+    color: #888;
+    border: 1px solid #212F3D;
+}
+
+/* Close Button on Main Window */
+QPushButton#closeButton {
+    font-size: 16pt;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    color: #E74C3C;
+    padding-bottom: 3px;
+}
+QPushButton#closeButton:hover {
+    background-color: #C0392B;
+    color: white;
+    border-radius: 4px;
+}
+
+/* Table Styling */
+QTableWidget {
+    gridline-color: #2C3E50;
+    selection-background-color: #1F3A93;
+    alternate-background-color: #0E141B;
+    background-color: #0B1016;
+    border: 1px solid #243447;
+    border-radius: 6px;
+}
+QHeaderView::section {
+    background-color: #0F2A47;
+    padding: 4px;
+    border: 1px solid #1B4F72;
+    font-weight: 700;
+}
+
+/* Frames and GroupBoxes */
+QFrame[frameShape="4"], QFrame[frameShape="5"] { /* HLine, VLine */
+    color: #243447;
+}
+QGroupBox {
+    border: 1px solid #243447;
+    border-radius: 5px;
+    margin-top: 6px;
+    font-weight: bold;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    left: 10px;
+}
+
+/* ===== ActiveTicketWindow Styling ===== */
+ActiveTicketWindow {
+    background-color: #0B1016;
+    border: 1px solid #1DB954;
+    border-radius: 4px;
+}
+ActiveTicketWindow #titleLabel {
+    background-color: #1DB954;
+    color: #0B1016;
+    font-weight: bold;
+    font-size: 11.5px;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+ActiveTicketWindow #statusBar {
+    background-color: #F1C40F;
+    color: #0B1016;
+    font-weight: bold;
+    font-size: 10.5px;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+/* ===== ActiveTicketWindow Sizing Fix ===== */
+ActiveTicketWindow QWidget {
+    font-size: 8pt;
+}
+ActiveTicketWindow QPushButton {
+    padding: 2px 5px;
+    height: 18px;
+}
+ActiveTicketWindow QPushButton#closeButton {
+    font-size: 10pt;
+}
+ActiveTicketWindow QGroupBox {
+    font-size: 8pt;
+}
+
+/* ========================================= */
+/* ===== ActiveTicketWindow 'Pair' Button Fix (NEW) ===== */
+/* ========================================= */
+ActiveTicketWindow QPushButton[text="Pair"] {
+    padding: 2px 8px; /* पैडिंग को एडजस्ट करें */
+    font-size: 8pt;
+}
+/* ========================================= */
+
+/* ===== Clock Label on Main Window ===== */
+QLabel#clockLabel {
+    font-family: "Consolas", "Courier New", monospace;
+    font-weight: bold;
+    font-size: 13pt;
+    color: #FFFFFF;
+    background-color: transparent;
+    padding: 0 10px;
+    min-width: 130px;
+}
+
+/* ===== Clock Label on ActiveTicketWindow ===== */
+ActiveTicketWindow QLabel#activeClockLabel {
+    font-family: "Consolas", "Courier New", monospace;
+    font-weight: bold;
+    font-size: 12pt;
+    color: #FFFFFF;                /* सफ़ेद टेक्स्ट */
+    background-color: #FF0000;     /* लाल बैकग्राउंड */
+    border: 1px solid #243447;
+    border-radius: 4px;
+    padding: 1px 5px;
+    min-width: 110px;
+
+    /* ↓↓↓ यहीं से left/right adjust होगा ↓↓↓ */
+    margin-left: 15px;   /* value बढ़ाओ ⇒ clock RIGHT जाएगा */
+    margin-right: 0px;  /* value बढ़ाओ ⇒ clock LEFT “दिखेगा” (क्योंकि बाकी widgets push होंगे) */
+}
+/* ---- LICENSE BADGE: text-only (no bg/border) ---- */
+QLabel#licenseBadge {
+    background: transparent;   /* कोई बैकग्राउंड नहीं */
+    border: none;              /* कोई बॉर्डर नहीं */
+    color: #E6E6E6;            /* पत्ती जैसा ही टेक्स्ट रंग */
+    font-weight: 800;          /* bold */
+    padding: 0 8px;            /* हल्का सा horizontal gap (चाहें तो 0 कर दें) */
+    margin: 0;                 /* लेआउट पर भरोसा; चाहें तो बदलें */
+}
+
+/* hover/disabled में भी कोई अलग रंग/बैकग्राउंड नहीं */
+QLabel#licenseBadge:hover,
+QLabel#licenseBadge:disabled {
+    background: transparent;
+    border: none;
+    color: #E6E6E6;
+}
+
+/* पोज़िशन बायस— सिर्फ़ padding से left/right “झुकाव” दें (optional) */
+QLabel#licenseBadge[posHint="left"]   { padding-left: 2px;  padding-right: 14px; }
+QLabel#licenseBadge[posHint="right"]  { padding-left: 14px; padding-right: 2px;  }
+QLabel#licenseBadge[posHint="center"] { padding-left: 10px; padding-right: 10px; }
+
+/* BMW बैज */
+#brandBadge {
+  color: #27C1FF;         /* टेक्स्ट रंग */
+  font-weight: 800;       /* बोल्ड */
+  font-size: 18px;        /* साइज */
+  padding: 0px 6px;
+  margin-left: 30px;      /* ID बॉक्स से दूरी */
+  border: none;           /* चाहें तो बॉर्डर दें */
+}
+#brandBadge[dimmed="true"] { opacity: .85; }
+
+
