@@ -1,0 +1,42 @@
+name: BMW first-party source recovery assessment
+on:
+  push:
+    branches: [recovery/bmw-full-recovery-20261113]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install PyInstaller extractor
+        run: python -m pip install --disable-pip-version-check pyinstxtractor-ng==2026.7.3
+      - name: Build pycdc for static source assessment
+        run: |
+          git clone --depth=1 https://github.com/zrax/pycdc.git /tmp/pycdc
+          cmake -S /tmp/pycdc -B /tmp/pycdc-build -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pycdc-build --parallel 2
+          test -x /tmp/pycdc-build/pycdc
+      - name: Extract and analyze without executing BMW.exe
+        env:
+          PYCDC_BIN: /tmp/pycdc-build/pycdc
+        run: |
+          pyinstxtractor-ng BMW.exe > recovery-extract.log 2>&1
+          python recovery/recover_first_party.py | tee source-recovery-summary.log
+      - name: Upload source analysis and verified recovery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMW-FIRST-PARTY-SOURCE-RECOVERY
+          path: |
+            recovery-output/first_party_source/
+            source-recovery-summary.log
+            recovery-extract.log
+          retention-days: 14
