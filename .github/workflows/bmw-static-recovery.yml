@@ -1,0 +1,53 @@
+name: BMW read-only recovery inventory
+on:
+  push:
+    branches: [recovery/bmw-static-20261113]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install extractor
+        run: python -m pip install --disable-pip-version-check 'pyinstxtractor-ng==2026.7.3'
+      - name: Inspect package without executing it
+        run: |
+          pyinstxtractor-ng --info BMW.exe > package-info.txt 2>&1 || true
+          pyinstxtractor-ng BMW.exe > extraction-log.txt 2>&1 || true
+          python recovery/bmw_static_report.py
+      - name: Print safe summary only
+        run: |
+          echo "==== PyInstaller metadata (head) ===="
+          head -n 35 package-info.txt || true
+          echo "==== Extraction tool summary (head) ===="
+          head -n 30 extraction-log.txt || true
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('recovery-output')
+          flags=base/'EXECUTABLE_FLAGS.json'
+          if flags.exists():
+              print('Archive flags:',flags.read_text())
+          items=json.loads((base/'EXTRACTED_FILE_INVENTORY.json').read_text())
+          print('Extracted/named targets:',len(items))
+          print('Recovered .pyc names (first 25):',[x['path'] for x in items if x['path'].endswith('.pyc')][:25])
+          print('Domains/endpoints, secrets and actual code NOT printed.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BMW-static-recovery-inventory
+          path: |
+            package-info.txt
+            extraction-log.txt
+            recovery-output/EXECUTABLE_FLAGS.json
+            recovery-output/EXTRACTED_FILE_INVENTORY.json
+            recovery-output/README_RECOVERY.md
+          retention-days: 7
