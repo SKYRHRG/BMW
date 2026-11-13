@@ -27,6 +27,8 @@ jobs:
           python recovery/target_license_modules.py
           python recovery/license_contract_trace.py
           python recovery/step2_introspect.py
+          python -m pip install requests
+          python -m unittest discover -s recovery/tests -v
       - name: Print safe summary only
         run: |
           echo "==== PyInstaller metadata (head) ===="
