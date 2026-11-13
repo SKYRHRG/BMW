@@ -1,0 +1,51 @@
+name: BMW Step 3 PHP MySQL backend validation
+
+on:
+  push:
+    branches: [recovery/bmw-step3-backend-v2]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-mysql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root_test_password
+          MYSQL_DATABASE: bmw_test
+          MYSQL_USER: bmw_user
+          MYSQL_PASSWORD: test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot_test_password"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql
+          coverage: none
+      - name: PHP syntax checking
+        run: |
+          php -v
+          find backend -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: MySQL end-to-end validation
+        run: |
+          python3 backend/tests/mysql_integration.py > php-mysql-test-results.log 2>&1 || { cat php-mysql-test-results.log; exit 1; }
+          cat php-mysql-test-results.log
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMW-PHP-MySQL-test-results
+          path: php-mysql-test-results.log
+          retention-days: 7
