@@ -39,3 +39,24 @@ If the main app forces an old server URL, source access or an authorized new bui
 - Rebuilt working BMW.exe: NOT PRODUCED.
 
 Original ZIP/EXE is kept unchanged.
+
+
+## New verified finding: where the environment variable is read
+
+The read-only disassembly probe found that license_dialog.pyc reads
+os.environ.get("LICENSE_API_URL", "https://iambts.in/api/app/fauth/license/check")
+**inside its if __name__ == "__main__" / standalone execution path.**
+
+That fact alone does NOT mean a compiled main program importing license_dialog
+will execute this block. When imported, Python sets __name__ to
+"license_dialog", not "__main__". The normal BMW GUI might instead supply
+an explicit API URL through the LicenseDialog constructor. Its main logic
+is PyArmor protected.
+
+Therefore the included run-bmw-license-env.cmd is a NON-INVASIVE TEST ONLY;
+it is not evidence that the current original BMW.exe uses the new endpoint.
+If a new server receives no requests, stop: no automatic migration occurred.
+
+No working modified exe is yet available. Existing app source or an
+official/authorized configuration path is required if the main executable
+hardcodes the API URL.
