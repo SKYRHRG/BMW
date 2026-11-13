@@ -23,6 +23,7 @@ jobs:
           pyinstxtractor-ng --info BMW.exe > package-info.txt 2>&1 || true
           pyinstxtractor-ng BMW.exe > extraction-log.txt 2>&1 || true
           python recovery/bmw_static_report.py
+          python recovery/license_probe.py
       - name: Print safe summary only
         run: |
           echo "==== PyInstaller metadata (head) ===="
@@ -49,5 +50,6 @@ jobs:
             extraction-log.txt
             recovery-output/EXECUTABLE_FLAGS.json
             recovery-output/EXTRACTED_FILE_INVENTORY.json
+            recovery-output/MAIN_MODULE_CODE_STRUCTURE.json
             recovery-output/README_RECOVERY.md
           retention-days: 7
