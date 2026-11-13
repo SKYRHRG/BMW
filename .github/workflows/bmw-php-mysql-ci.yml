@@ -49,3 +49,18 @@ jobs:
           name: BMW-PHP-MySQL-test-results
           path: php-mysql-test-results.log
           retention-days: 7
+
+      - name: Package installable backend ZIP
+        if: success()
+        run: |
+          cd backend
+          zip -q -r ../BMW-PHP-LICENSE-SERVER-PACKAGE.zip . -x 'tests/*' 'storage/config.php'
+          cd ..
+          unzip -t BMW-PHP-LICENSE-SERVER-PACKAGE.zip | tail -1
+      - name: Upload deployable backend ZIP
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMW-PHP-LICENSE-SERVER-PACKAGE
+          path: BMW-PHP-LICENSE-SERVER-PACKAGE.zip
+          retention-days: 14
