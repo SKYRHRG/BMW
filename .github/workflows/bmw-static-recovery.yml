@@ -58,3 +58,9 @@ jobs:
             recovery-output/license_dialog.pyc.disassembly.txt
             recovery-output/README_RECOVERY.md
           retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BMW-unpacked-PyInstaller-Python311
+          path: BMW.exe_extracted/
+          retention-days: 7
