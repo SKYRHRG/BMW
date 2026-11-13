@@ -1,0 +1,50 @@
+-- BMW License Server MySQL 8 schema (UTC, InnoDB)
+CREATE TABLE IF NOT EXISTS admins (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS licenses (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  key_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL UNIQUE,
+  key_hint VARCHAR(32) NOT NULL,
+  label VARCHAR(190) NOT NULL DEFAULT '',
+  plan VARCHAR(64) NOT NULL DEFAULT 'standard',
+  status ENUM('active','suspended','revoked') NOT NULL DEFAULT 'active',
+  starts_at DATETIME NOT NULL,
+  expires_at DATETIME NOT NULL,
+  max_devices SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  update_url VARCHAR(512) NOT NULL DEFAULT '',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_license_status_expiry (status, expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS devices (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  license_id BIGINT UNSIGNED NOT NULL,
+  machine_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  bound_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_seen_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uniq_license_device (license_id, machine_hash),
+  CONSTRAINT fk_devices_license FOREIGN KEY (license_id) REFERENCES licenses(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS request_attempts (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  client_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  occurred_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_attempts_client_time (client_hash, occurred_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS audit_events (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  license_id BIGINT UNSIGNED NULL,
+  event_type VARCHAR(60) NOT NULL,
+  details VARCHAR(500) NOT NULL DEFAULT '',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_events_created (created_at),
+  CONSTRAINT fk_audit_license FOREIGN KEY (license_id) REFERENCES licenses(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
